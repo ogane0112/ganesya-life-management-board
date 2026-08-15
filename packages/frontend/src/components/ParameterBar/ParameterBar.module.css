@@ -1,0 +1,30 @@
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.7rem;
+  margin: 6px 0;
+}
+
+.label {
+  min-width: 3.5em;
+  color: var(--rp-text-muted);
+}
+
+.track {
+  flex: 1;
+  height: 12px;
+  background: #000;
+  border: 2px solid var(--rp-border);
+  padding: 1px;
+}
+
+.fill {
+  height: 100%;
+  transition: width 400ms ease-out;
+}
+
+.value {
+  min-width: 5em;
+  text-align: right;
+}

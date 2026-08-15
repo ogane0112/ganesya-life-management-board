@@ -1,0 +1,22 @@
+.avatar {
+  width: 64px;
+  height: 64px;
+  border: 4px solid var(--rp-border);
+  image-rendering: pixelated;
+}
+
+.novice {
+  background: var(--rp-text-muted);
+}
+
+.adept {
+  background: var(--rp-green);
+}
+
+.veteran {
+  background: var(--rp-mp);
+}
+
+.legend {
+  background: var(--rp-gold);
+}

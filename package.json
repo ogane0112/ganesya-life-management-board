@@ -1,0 +1,20 @@
+{
+  "name": "ganesya-life-management-board",
+  "private": true,
+  "version": "0.1.0",
+  "description": "life-management RPG visualizer - status screen visualization for the life-management repository",
+  "workspaces": [
+    "packages/stats-engine",
+    "packages/worker",
+    "packages/frontend"
+  ],
+  "scripts": {
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run typecheck --workspaces --if-present"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

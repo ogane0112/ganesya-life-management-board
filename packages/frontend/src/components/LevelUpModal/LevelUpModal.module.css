@@ -1,0 +1,49 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  min-width: 280px;
+  text-align: center;
+}
+
+.headline {
+  font-size: 1rem;
+  color: var(--rp-gold);
+  margin-bottom: 12px;
+  animation: flash 600ms ease-in-out 2;
+}
+
+.levelText {
+  font-size: 1.25rem;
+  margin-bottom: 16px;
+}
+
+.closeButton {
+  font-family: var(--pixel-font);
+  background: var(--rp-window-background);
+  color: var(--rp-text);
+  border: 2px solid var(--rp-border);
+  padding: 8px 16px;
+  cursor: pointer;
+}
+
+.closeButton:hover {
+  background: var(--rp-border-shadow);
+}
+
+@keyframes flash {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.2;
+  }
+}

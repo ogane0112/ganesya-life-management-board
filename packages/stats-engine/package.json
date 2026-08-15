@@ -1,0 +1,18 @@
+{
+  "name": "@ganesya/stats-engine",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Pure calculation logic that turns a life-management repo snapshot into RPG character status",
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3",
+    "vitest": "^2.1.4"
+  }
+}

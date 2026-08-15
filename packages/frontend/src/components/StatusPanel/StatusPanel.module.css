@@ -1,0 +1,22 @@
+.header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.name {
+  font-size: 0.7rem;
+}
+
+.level {
+  font-size: 0.9rem;
+  color: var(--rp-gold);
+  margin-top: 4px;
+}
+
+.statRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}

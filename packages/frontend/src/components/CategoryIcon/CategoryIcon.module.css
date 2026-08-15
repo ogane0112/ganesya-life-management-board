@@ -1,0 +1,7 @@
+.icon {
+  display: inline-block;
+  width: 1.5em;
+  text-align: center;
+  font-size: 1rem;
+  image-rendering: pixelated;
+}

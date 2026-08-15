@@ -1,0 +1,31 @@
+/* PixelFont + RetroPalette tokens, applied globally. */
+
+:root {
+  --rp-background: #0f0f1b;
+  --rp-window-background: #1a1a2e;
+  --rp-border: #e8e8e8;
+  --rp-border-shadow: #4a4a6a;
+  --rp-text: #f4f4f4;
+  --rp-text-muted: #9a9ab0;
+  --rp-hp: #e94560;
+  --rp-hp-dark: #7a1f2e;
+  --rp-mp: #3fa7d6;
+  --rp-mp-dark: #1f4e66;
+  --rp-gold: #f5c451;
+  --rp-green: #5ec96b;
+  --rp-green-dark: #2c5c33;
+  --rp-purple: #a06cd5;
+
+  --pixel-font: "Press Start 2P", "MS Gothic", monospace;
+}
+
+body {
+  background: var(--rp-background);
+  color: var(--rp-text);
+  font-family: var(--pixel-font);
+  image-rendering: pixelated;
+}
+
+* {
+  box-sizing: border-box;
+}

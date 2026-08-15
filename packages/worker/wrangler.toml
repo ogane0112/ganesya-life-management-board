@@ -1,0 +1,16 @@
+name = "life-management-rpg-worker"
+main = "src/index.ts"
+compatibility_date = "2024-11-01"
+
+# Non-secret configuration. Override per-environment with `wrangler.toml`
+# [env.xxx.vars] blocks or `wrangler secret put` for the token below.
+[vars]
+GITHUB_OWNER = "ogane0112"
+GITHUB_REPO = "life-management"
+# Comma-separated list of origins allowed to call this Worker
+# (the GitHub Pages origin serving the frontend).
+ALLOWED_ORIGIN = "https://ogane0112.github.io"
+
+# Secrets (set via `wrangler secret put <NAME>`, never committed):
+#   GITHUB_TOKEN - GitHub Personal Access Token with read access to the
+#                  private life-management repo (contents: read).
