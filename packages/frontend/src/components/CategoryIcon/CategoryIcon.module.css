@@ -1,7 +1,11 @@
 .icon {
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: 1.5em;
-  text-align: center;
-  font-size: 1rem;
+  image-rendering: pixelated;
+}
+
+.icon svg {
   image-rendering: pixelated;
 }

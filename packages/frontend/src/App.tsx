@@ -1,6 +1,7 @@
 import type { CharacterStatus } from "@ganesya/stats-engine";
 import { useEffect, useState } from "react";
 import { ApiError, fetchStatus } from "./api/client.js";
+import styles from "./App.module.css";
 import { LevelUpModal } from "./components/LevelUpModal/LevelUpModal.js";
 import { PixelWindow } from "./components/PixelWindow/PixelWindow.js";
 import { StatusPanel } from "./components/StatusPanel/StatusPanel.js";
@@ -53,10 +54,13 @@ export function App({ workerUrl = ENV_WORKER_URL }: AppProps = {}) {
   const [levelUpEvent, dismissLevelUp] = useLevelUpDetection(currentLevel);
 
   return (
-    <main style={{ padding: 24, maxWidth: 480, margin: "0 auto" }}>
-      {state.kind === "loading" && <PixelWindow>よみこみちゅう...</PixelWindow>}
-      {state.kind === "error" && <PixelWindow title="エラー">{state.message}</PixelWindow>}
-      {state.kind === "ready" && <StatusPanel status={state.status} />}
+    <main className={styles.page}>
+      <h1 className={styles.title}>life-management RPG</h1>
+      <div className={styles.content}>
+        {state.kind === "loading" && <PixelWindow>よみこみちゅう...</PixelWindow>}
+        {state.kind === "error" && <PixelWindow title="エラー">{state.message}</PixelWindow>}
+        {state.kind === "ready" && <StatusPanel status={state.status} />}
+      </div>
       {levelUpEvent && (
         <LevelUpModal
           previousLevel={levelUpEvent.previousLevel}

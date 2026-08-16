@@ -35,7 +35,9 @@ export function StatusPanel({ status, characterName = "life-management" }: Statu
         return (
           <div className={styles.statRow} key={key}>
             <CategoryIcon category={category} />
-            <ParameterBar label={label} value={stat.score} max={stat.max} colorVar={colorVar} />
+            <div className={styles.barWrap}>
+              <ParameterBar label={label} value={stat.score} max={stat.max} colorVar={colorVar} />
+            </div>
           </div>
         );
       })}

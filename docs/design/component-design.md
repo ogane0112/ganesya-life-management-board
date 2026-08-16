@@ -60,8 +60,13 @@ flowchart TD
 
 ## 既知の制約（プレースホルダー実装）
 
-`PixelAvatar` と `CategoryIcon` は、実際のドット絵スプライトシートの代わりに
-CSS単色ブロック／絵文字風グリフで代替している（本物のピクセルアートアセットは今回未作成）。
-差し替え可能な設計にしてあるので、アセットが用意でき次第 `PixelAvatar.module.css` の
-背景色指定と `CategoryIcon` の `symbol` を画像/SVGスプライトに置き換えるだけで移行できる。
-判断根拠は [decisions/0005-placeholder-pixel-art.md](../decisions/0005-placeholder-pixel-art.md)。
+`PixelAvatar` は、実際のドット絵スプライトシートの代わりにCSS単色ブロックで
+代替している（本物のピクセルアートアセットは今回未作成）。差し替え可能な設計に
+してあるので、アセットが用意でき次第 `PixelAvatar.module.css` の背景色指定を
+画像/SVGスプライトに置き換えるだけで移行できる。判断根拠は
+[decisions/0005-placeholder-pixel-art.md](../decisions/0005-placeholder-pixel-art.md)。
+
+`CategoryIcon` は当初Unicodeグリフで代替していたが、フォントによってはグリフが
+表示されない実機不具合が見つかったため、8x8のインラインSVGドット絵
+（`pixelGrids.ts`）に置き換え済み（[decisions/0008](../decisions/0008-svg-pixel-icons-and-layout-polish.md)）。
+フォント非依存で確実に描画される、抽象度の高いシルエットアイコン。
