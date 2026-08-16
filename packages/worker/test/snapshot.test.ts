@@ -41,10 +41,21 @@ describe("buildSnapshot", () => {
     const client = fakeClient({
       getFileContent: async (path) => {
         if (path === "profile/qualifications.md") {
-          return "| name | acquiredDate | expiryDate |\n|---|---|---|\n| A | 2020-01-01 |  |";
+          return [
+            "## 取得済み資格・免許",
+            "| 資格名 | 取得年月 | 有効期限 | 備考 |",
+            "|---|---|---|---|",
+            "| A | 2020-01-01 |  | - |",
+          ].join("\n");
         }
         if (path === "profile/career.md") {
-          return "| title | date |\n|---|---|\n| 入社 | 2019-04-01 |";
+          return [
+            "## 現職",
+            "| 項目 | 内容 |",
+            "|---|---|",
+            "| 職種 | 入社 |",
+            "| 入社日 | 2019-04-01 |",
+          ].join("\n");
         }
         return "";
       },

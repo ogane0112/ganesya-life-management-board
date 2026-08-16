@@ -76,11 +76,17 @@ VITE_WORKER_URL="https://<worker-subdomain>.workers.dev/api/status" npm run buil
 
 [testing/test-viewpoints.md](./testing/test-viewpoints.md) の「未実施・要手動確認」と対応。
 
-- [ ] Workerが実際に `life-management` のprivateリポジトリを読めている（401/403が出ない）
-- [ ] `logs/` 等の実ファイル名が `YYYY-MM-DD` プレフィックス前提と一致しているか確認し、
-      一致しなければ `packages/worker/src/github.ts` の日付抽出ロジックを調整
-- [ ] `profile/qualifications.md` / `career.md` が想定のMarkdownテーブル形式になっているか
-      確認し、一致しなければ `packages/worker/src/parsers.ts` を調整
+- [ ] Workerが実際に `life-management` のprivateリポジトリを読めている（401/403が出ない）。
+      **全ステータスが0のままなら、まずこれを疑う**: `curl` で
+      `https://api.github.com/repos/ogane0112/life-management/contents/logs` を
+      Worker用PATで叩いてみて200が返るか確認する。404が返る場合、privateリポジトリでは
+      「存在しない」との違いが区別できないため、fine-grained PATに
+      `ogane0112/life-management` への `Contents: Read` が明示的に付与されているか、
+      classic PATなら `repo` スコープが付いているかを確認する。
+- [ ] `logs/` 等の実ファイル名・`profile/qualifications.md` / `career.md` のMarkdown形式は
+      2026-08-16に実リポジトリで確認しパーサーを合わせ済み
+      （[decisions/0007](./decisions/0007-real-data-format-corrections.md)）。今後
+      ファイル構成を変える場合は `packages/worker/src/parsers.ts` の追随が必要。
 - [ ] 許可アカウント以外でアクセスした際にCloudflare Accessのログイン画面が出る
 - [ ] 許可アカウントでログインし、GitHub Pages上でStatusPanelが表示される
 - [ ] リポジトリに新しい記録を追加 → リロードでステータスが変化する（リアルタイム性）

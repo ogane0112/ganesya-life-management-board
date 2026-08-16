@@ -1,4 +1,5 @@
 import type { RepoFileEntry } from "@ganesya/stats-engine";
+import { parseFrontmatterDate } from "./frontmatter.js";
 
 const FILENAME_DATE_RE = /^(\d{4}-\d{2}-\d{2})/;
 /** Sentinel for files whose date could not be determined from their name.
@@ -30,10 +31,22 @@ interface ContentsApiFile {
   encoding: string;
 }
 
+export interface ListDirectoryOptions {
+  /**
+   * When true, files whose name has no leading date are fetched and
+   * scanned for a frontmatter `last_updated`/`created` date instead of
+   * falling back to the "unknown" sentinel. Costs one extra API request
+   * per such file, so only enable it for categories that actually need
+   * per-file freshness (e.g. finance/) — categories scored purely by
+   * count (equipment/judgement/bond) don't need this.
+   */
+  resolveDatesFromContent?: boolean;
+}
+
 /** Structural interface so callers (and tests) can depend on this instead
  * of the concrete `GitHubClient` implementation. */
 export interface GitHubDataSource {
-  listDirectory(dirPath: string): Promise<RepoFileEntry[]>;
+  listDirectory(dirPath: string, options?: ListDirectoryOptions): Promise<RepoFileEntry[]>;
   getFileContent(filePath: string): Promise<string>;
 }
 
@@ -82,17 +95,30 @@ export class GitHubClient implements GitHubDataSource {
   }
 
   /** Lists files directly inside `dirPath`. Missing directories yield []. */
-  async listDirectory(dirPath: string): Promise<RepoFileEntry[]> {
+  async listDirectory(
+    dirPath: string,
+    options: ListDirectoryOptions = {},
+  ): Promise<RepoFileEntry[]> {
     const json = await this.request(`contents/${dirPath}`);
     if (!Array.isArray(json)) return [];
-    return (json as ContentsApiEntry[])
-      .filter((entry) => entry.type === "file")
-      .map((entry) => ({
-        path: entry.path,
-        name: entry.name,
-        size: entry.size,
-        lastModified: extractDateFromFilename(entry.name),
-      }));
+    const files = (json as ContentsApiEntry[]).filter((entry) => entry.type === "file");
+
+    return Promise.all(
+      files.map(async (entry) => {
+        const filenameDate = extractDateFromFilename(entry.name);
+        let lastModified = filenameDate;
+        if (filenameDate === UNKNOWN_DATE && options.resolveDatesFromContent) {
+          const content = await this.getFileContent(entry.path);
+          lastModified = parseFrontmatterDate(content) ?? UNKNOWN_DATE;
+        }
+        return {
+          path: entry.path,
+          name: entry.name,
+          size: entry.size,
+          lastModified,
+        };
+      }),
+    );
   }
 
   /** Returns the UTF-8 text content of `filePath`, or "" if it's missing. */

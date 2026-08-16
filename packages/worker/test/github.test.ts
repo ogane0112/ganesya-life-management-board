@@ -59,6 +59,60 @@ describe("GitHubClient.listDirectory", () => {
       }),
     );
   });
+
+  it("resolveDatesFromContent: fetches content and reads a frontmatter date for undated filenames", async () => {
+    const base64 = btoa('---\nlast_updated: "2026-06-29"\n---\n');
+    const fetchFn = vi.fn(async (url: string) => {
+      if (url.endsWith("/contents/finance")) {
+        return new Response(
+          JSON.stringify([
+            { type: "file", name: "subscriptions.md", path: "finance/subscriptions.md", size: 10 },
+          ]),
+          { status: 200 },
+        );
+      }
+      return new Response(
+        JSON.stringify({ type: "file", encoding: "base64", content: base64 }),
+        { status: 200 },
+      );
+    }) as unknown as typeof fetch;
+
+    const files = await client(fetchFn).listDirectory("finance", {
+      resolveDatesFromContent: true,
+    });
+    expect(files[0].lastModified).toBe("2026-06-29");
+  });
+
+  it("resolveDatesFromContent: does not fetch content when the filename already has a date", async () => {
+    const fetchFn = jsonFetch(200, [
+      { type: "file", name: "2026-08-14.md", path: "logs/2026-08-14.md", size: 10 },
+    ]);
+    await client(fetchFn).listDirectory("logs", { resolveDatesFromContent: true });
+    expect(fetchFn).toHaveBeenCalledTimes(1);
+  });
+
+  it("resolveDatesFromContent: falls back to the sentinel when the file has no frontmatter date", async () => {
+    const base64 = btoa("# no frontmatter here");
+    const fetchFn = vi.fn(async (url: string) => {
+      if (url.endsWith("/contents/finance")) {
+        return new Response(
+          JSON.stringify([
+            { type: "file", name: "points.md", path: "finance/points.md", size: 10 },
+          ]),
+          { status: 200 },
+        );
+      }
+      return new Response(
+        JSON.stringify({ type: "file", encoding: "base64", content: base64 }),
+        { status: 200 },
+      );
+    }) as unknown as typeof fetch;
+
+    const files = await client(fetchFn).listDirectory("finance", {
+      resolveDatesFromContent: true,
+    });
+    expect(files[0].lastModified).toBe("1970-01-01");
+  });
 });
 
 describe("GitHubClient.getFileContent", () => {

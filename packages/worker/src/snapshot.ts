@@ -20,7 +20,7 @@ export async function buildSnapshot(
   const [logs, finance, home, decisions, chatSummaries, qualificationsRaw, careerRaw] =
     await Promise.all([
       client.listDirectory(REPO_PATHS.logs),
-      client.listDirectory(REPO_PATHS.finance),
+      client.listDirectory(REPO_PATHS.finance, { resolveDatesFromContent: true }),
       client.listDirectory(REPO_PATHS.home),
       client.listDirectory(REPO_PATHS.decisions),
       client.listDirectory(REPO_PATHS.chatSummaries),
