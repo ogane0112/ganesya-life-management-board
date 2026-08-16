@@ -19,6 +19,7 @@ const ALL_CATEGORIES: StatCategory[] = [
 describe("buildStatExplanation", () => {
   it.each(ALL_CATEGORIES)("returns a populated explanation for %s", (category) => {
     const explanation = buildStatExplanation(category, stat());
+    expect(explanation.summary).not.toBe("");
     expect(explanation.source).not.toBe("");
     expect(explanation.formula.length).toBeGreaterThan(0);
     expect(explanation.breakdown.length).toBeGreaterThan(0);

@@ -6,11 +6,11 @@
 | コンポーネント | 役割 | 主なProps | 対応するテスト |
 |---|---|---|---|
 | `PixelWindow` | ドラクエ風の枠線テキストウィンドウ。他の全パネルの土台 | `title?`, `children` | `PixelWindow.test.tsx` |
-| `ParameterBar` | HP/MPゲージ風バー。値変化時にパラパラカウントアップ | `label`, `value`, `max`, `colorVar?` | `ParameterBar.test.tsx` |
+| `ParameterBar` | HP/MPゲージ風バー。ラベル＋一行ヒント付き、値変化時にパラパラカウントアップ | `label`, `hint?`, `value`, `max`, `colorVar?` | `ParameterBar.test.tsx` |
 | `StatusPanel` | LV＋全ステータスバーをまとめたキャラクターカード | `status: CharacterStatus`, `characterName?` | `StatusPanel.test.tsx` |
 | `PixelAvatar` | レベル帯（novice/adept/veteran/legend）で色が変わる16x16ドット絵の猫アバター | `level` | `PixelAvatar.test.tsx` |
 | `LevelUpModal` | 「レベルが あがった！」演出モーダル（フラッシュ＋ビープ音＋カウントアップ） | `previousLevel`, `newLevel`, `onClose`, `playSound?`, `playBeep?` | `LevelUpModal.test.tsx` |
-| `CategoryIcon` | 各カテゴリ（HP/INT/財力/装備/判断力/絆）の8x8ドット絵アイコン | `category` | `CategoryIcon.test.tsx` |
+| `CategoryIcon` | 各カテゴリ（継続力/資格力/財力/生活基盤/判断力/絆）の8x8ドット絵アイコン | `category` | `CategoryIcon.test.tsx` |
 | `SpaceBackground` | 星空・流れ星・地球が動く装飾的な背景（`aria-hidden`） | — | Playwrightでの実描画確認（[decisions/0009](../decisions/0009-pixel-cat-avatar-and-space-background.md)） |
 | `InfoTooltip` | ホバー/クリック/フォーカスで開く説明ポップオーバー | `label`, `children` | `InfoTooltip.test.tsx` |
 | `PixelFont`（トークン） | `--pixel-font` CSS変数。"Press Start 2P" + 和文フォールバック | — | `global.css` |
@@ -36,10 +36,16 @@ flowchart TD
     SpaceBackground --> App
 ```
 
-## ステータス説明ツールチップ
+## ステータスの分かりやすさ
+
+ステータス名は「HP」「INT」のようなRPG略称ではなく、`継続力` `資格力` `財力`
+`生活基盤` `判断力` `絆` という、測定対象そのものを表す日本語にしてある。
+さらに各ラベルの下には「日々の記録の続きぐあい」のような一行ヒントを常時
+表示する（狭い画面では非表示、ポップオーバーが代替）。
+経緯は [decisions/0011](../decisions/0011-plain-language-stat-labels.md)。
 
 各ステータス行とLVには情報アイコンが付いており、ホバー/クリック/キーボード
-フォーカスのいずれでも「データ元」「算出方法」「いまの内訳」を表示する。
+フォーカスのいずれでも「一言でいうと」「データ元」「算出方法」「いまの内訳」を表示する。
 説明文は`stats-engine`の`STATUS_WEIGHTS`から重み・半減点を読み取って
 生成しているため、計算式をチューニングしても説明が古いまま残ることがない。
 設計判断の詳細は [decisions/0010](../decisions/0010-stat-explanation-tooltips.md)。

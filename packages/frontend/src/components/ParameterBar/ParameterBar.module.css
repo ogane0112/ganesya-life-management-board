@@ -3,12 +3,37 @@
   align-items: center;
   gap: clamp(8px, 1vw, 16px);
   font-size: clamp(0.7rem, 1.1vw, 1rem);
-  margin: clamp(6px, 1vh, 12px) 0;
+  margin: clamp(8px, 1.2vh, 14px) 0;
+}
+
+.labelBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: clamp(5em, 13vw, 11em);
+  flex-shrink: 0;
 }
 
 .label {
-  min-width: 3.5em;
+  color: var(--rp-text);
+}
+
+/* The plain-language "what does this count" line. Dropped on narrow
+ * screens where there's no room for it; the info popover still has it. */
+.hint {
   color: var(--rp-text-muted);
+  font-size: 0.72em;
+  line-height: 1.4;
+}
+
+@media (max-width: 720px) {
+  .hint {
+    display: none;
+  }
+
+  .labelBlock {
+    width: 5.5em;
+  }
 }
 
 .track {

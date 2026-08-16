@@ -5,7 +5,13 @@
 .title {
   display: block;
   color: var(--rp-gold);
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+}
+
+.summary {
+  display: block;
+  color: var(--rp-text);
+  line-height: 1.8;
 }
 
 .sectionLabel {

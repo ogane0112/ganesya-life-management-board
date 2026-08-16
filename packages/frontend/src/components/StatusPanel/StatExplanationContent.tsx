@@ -13,6 +13,7 @@ export function StatExplanationContent({
   return (
     <span className={styles.root}>
       <span className={styles.title}>{title}</span>
+      <span className={styles.summary}>{explanation.summary}</span>
 
       <span className={styles.sectionLabel}>データ元</span>
       <code className={styles.source}>{explanation.source}</code>

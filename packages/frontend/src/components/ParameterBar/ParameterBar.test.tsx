@@ -28,6 +28,16 @@ describe("ParameterBar", () => {
     expect(bar).toHaveAttribute("aria-valuenow", "0");
   });
 
+  it("renders the hint describing what the score counts", () => {
+    render(<ParameterBar label="絆" hint="AIとの対話ログの数" value={38} max={100} />);
+    expect(screen.getByText("AIとの対話ログの数")).toBeInTheDocument();
+  });
+
+  it("omits the hint element when none is given", () => {
+    render(<ParameterBar label="絆" value={38} max={100} />);
+    expect(screen.queryByText(/対話ログ/)).not.toBeInTheDocument();
+  });
+
   it("treats a max of 0 as 1 to avoid division by zero", () => {
     render(<ParameterBar label="HP" value={0} max={0} />);
     const bar = screen.getByRole("progressbar", { name: "HP" });

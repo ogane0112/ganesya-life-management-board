@@ -23,11 +23,12 @@ interface CategoryMeta {
   label: string;
 }
 
+/** Labels match the plain-language stat names used in StatusPanel. */
 const CATEGORY_META: Record<StatCategory, CategoryMeta> = {
-  hp: { grid: HEART_GRID, colorVar: "--rp-hp", label: "HP" },
-  int: { grid: SPARKLE_GRID, colorVar: "--rp-mp", label: "INT" },
+  hp: { grid: HEART_GRID, colorVar: "--rp-hp", label: "継続力" },
+  int: { grid: SPARKLE_GRID, colorVar: "--rp-mp", label: "資格力" },
   finance: { grid: COIN_GRID, colorVar: "--rp-gold", label: "財力" },
-  equipment: { grid: SHIELD_GRID, colorVar: "--rp-text-muted", label: "装備" },
+  equipment: { grid: SHIELD_GRID, colorVar: "--rp-text-muted", label: "生活基盤" },
   judgement: { grid: GAVEL_GRID, colorVar: "--rp-purple", label: "判断力" },
   bond: { grid: NOTE_GRID, colorVar: "--rp-green", label: "絆" },
 };

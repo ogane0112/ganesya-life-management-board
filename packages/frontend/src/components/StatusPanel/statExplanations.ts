@@ -2,6 +2,9 @@ import { STATUS_WEIGHTS, type CharacterStatus } from "@ganesya/stats-engine";
 import type { StatCategory } from "../CategoryIcon/CategoryIcon.js";
 
 export interface StatExplanation {
+  /** One sentence answering "what does this number even mean?", shown
+   * first so the popover leads with meaning rather than mechanics. */
+  summary: string;
   /** Repo path(s) the score is derived from. */
   source: string;
   /** How the number is produced, in plain Japanese. */
@@ -32,6 +35,8 @@ export function buildStatExplanation(
     case "hp": {
       const w = STATUS_WEIGHTS.hp;
       return {
+        summary:
+          "毎日の記録をどれだけ続けられているかを表す。書き続けるほど上がり、間があくと下がる。",
         source: "logs/",
         formula: [
           `連続記録日数（重み${pct(w.streakWeight)}）と、直近${w.recentWindowDays}日の記録件数（重み${pct(w.recentWeight)}）の加重平均`,
@@ -51,6 +56,8 @@ export function buildStatExplanation(
     case "int": {
       const w = STATUS_WEIGHTS.int;
       return {
+        summary:
+          "取得済みの資格がどれだけ充実しているかを表す。資格が多く、かつ失効していないほど高い。",
         source: "profile/qualifications.md（取得済み資格・免許）",
         formula: [
           `資格の数（重み${pct(w.countWeight)}）と、有効期限内の資格の割合（重み${pct(w.validRatioWeight)}）の加重平均`,
@@ -67,6 +74,8 @@ export function buildStatExplanation(
     case "finance": {
       const w = STATUS_WEIGHTS.finance;
       return {
+        summary:
+          "お金まわりの記録がどれだけ充実し、新しく保たれているかを表す。",
         source: "finance/",
         formula: [
           `記録ファイル数（重み${pct(w.countWeight)}）と、直近${w.freshnessWindowDays}日以内に更新された割合（重み${pct(w.freshnessWeight)}）の加重平均`,
@@ -86,6 +95,8 @@ export function buildStatExplanation(
     case "equipment": {
       const w = STATUS_WEIGHTS.equipment;
       return {
+        summary:
+          "家電・住まいなど生活の基盤をどれだけ記録できているかを表す。",
         source: "home/",
         formula: [
           "家電・家具など生活基盤の記録ファイル数から算出",
@@ -98,6 +109,8 @@ export function buildStatExplanation(
     case "judgement": {
       const w = STATUS_WEIGHTS.judgement;
       return {
+        summary:
+          "「なぜそう決めたか」の記録がどれだけ溜まっているかを表す。",
         source: "decisions/",
         formula: [
           "意思決定ログの蓄積数から算出",
@@ -110,6 +123,7 @@ export function buildStatExplanation(
     case "bond": {
       const w = STATUS_WEIGHTS.bond;
       return {
+        summary: "AIとの対話ログがどれだけ溜まっているかを表す。",
         source: "chat-summaries/",
         formula: [
           "AIとの対話ログの蓄積数から算出",
@@ -126,6 +140,8 @@ export function buildStatExplanation(
 export function buildLevelExplanation(status: CharacterStatus): StatExplanation {
   const w = STATUS_WEIGHTS.level;
   return {
+    summary:
+      "キャリアの積み重ねから決まる総合レベル。career.md に書いた職歴が長く、イベントが多いほど上がる。",
     source: "profile/career.md（現職の入社日・職歴の期間）",
     formula: [
       `キャリアイベント1件につき ${w.xpPerCareerEvent} XP、経験年数1年につき ${w.xpPerYearOfExperience} XP`,

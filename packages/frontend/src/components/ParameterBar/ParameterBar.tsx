@@ -2,7 +2,14 @@ import { useCountUp } from "../../hooks/useCountUp.js";
 import styles from "./ParameterBar.module.css";
 
 export interface ParameterBarProps {
+  /** Plain-language name of what is being measured, e.g. "継続力". */
   label: string;
+  /**
+   * One-line description of what the score actually counts. Shown under
+   * the label so the meaning is readable without opening the info popover
+   * (hidden on narrow screens, where the popover carries it instead).
+   */
+  hint?: string;
   value: number;
   max: number;
   /** A RetroPalette CSS variable name, e.g. "--rp-hp". Defaults to HP red. */
@@ -10,7 +17,13 @@ export interface ParameterBarProps {
 }
 
 /** HP/MP-gauge-style status bar with a count-up animation on value changes. */
-export function ParameterBar({ label, value, max, colorVar = "--rp-hp" }: ParameterBarProps) {
+export function ParameterBar({
+  label,
+  hint,
+  value,
+  max,
+  colorVar = "--rp-hp",
+}: ParameterBarProps) {
   const safeMax = Math.max(1, max);
   const clamped = Math.min(safeMax, Math.max(0, value));
   const displayed = useCountUp(clamped);
@@ -18,7 +31,10 @@ export function ParameterBar({ label, value, max, colorVar = "--rp-hp" }: Parame
 
   return (
     <div className={styles.row}>
-      <span className={styles.label}>{label}</span>
+      <span className={styles.labelBlock}>
+        <span className={styles.label}>{label}</span>
+        {hint && <span className={styles.hint}>{hint}</span>}
+      </span>
       <div
         className={styles.track}
         role="progressbar"

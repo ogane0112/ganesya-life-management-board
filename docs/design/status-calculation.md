@@ -93,14 +93,17 @@ saturatingScore(count, halfPoint) = 100 * count / (count + halfPoint)
 
 ## 各ステータスの計算式
 
-| ステータス | 対象パス | 入力 | 計算式 | 半減点(halfPoint)等のデフォルト |
+画面上のラベルは「HP」「INT」のようなRPG略称ではなく、何を測っているかが分かる
+日本語名にしてある（[decisions/0011](../decisions/0011-plain-language-stat-labels.md)）。
+
+| ステータス（画面表示） | 対象パス | 入力 | 計算式 | 半減点(halfPoint)等のデフォルト |
 |---|---|---|---|---|
-| **HP / 継続力** | `logs/` | 連続記録日数(streak)、直近30日の記録件数 | `0.6 * saturatingScore(streak, 7) + 0.4 * saturatingScore(recent30, 15)` | streak半点7日、直近件数半点15件 |
-| **INT / 知力** | `profile/qualifications.md` | 資格数、有効期限内割合 | `0.5 * saturatingScore(count, 5) + 0.5 * (validRatio * 100)` | 半点5件 |
-| **財力・節約力** | `finance/` | ファイル数、直近90日以内に更新された割合 | `0.5 * saturatingScore(count, 10) + 0.5 * (freshRatio * 100)` | 半点10件、鮮度窓90日 |
-| **装備 / 生活基盤** | `home/` | ファイル数 | `saturatingScore(count, 8)` | 半点8件 |
+| **継続力**（旧HP） | `logs/` | 連続記録日数(streak)、直近30日の記録件数 | `0.6 * saturatingScore(streak, 7) + 0.4 * saturatingScore(recent30, 15)` | streak半点7日、直近件数半点15件 |
+| **資格力**（旧INT） | `profile/qualifications.md` | 資格数、有効期限内割合 | `0.5 * saturatingScore(count, 5) + 0.5 * (validRatio * 100)` | 半点5件 |
+| **財力** | `finance/` | ファイル数、直近90日以内に更新された割合 | `0.5 * saturatingScore(count, 10) + 0.5 * (freshRatio * 100)` | 半点10件、鮮度窓90日 |
+| **生活基盤**（旧装備） | `home/` | ファイル数 | `saturatingScore(count, 8)` | 半点8件 |
 | **判断力** | `decisions/` | ファイル数 | `saturatingScore(count, 10)` | 半点10件 |
-| **絆 / 対話履歴** | `chat-summaries/` | ファイル数 | `saturatingScore(count, 20)` | 半点20件 |
+| **絆** | `chat-summaries/` | ファイル数 | `saturatingScore(count, 20)` | 半点20件 |
 | **LV（レベル）** | `profile/career.md` | キャリアイベント数、経験年数 | `xp = events*50 + years*100` → `level = floor(sqrt(xp/50)) + 1`（1〜99にクランプ） | — |
 
 全て `packages/stats-engine/src/calculate.ts` の `STATUS_WEIGHTS` に集約されており、

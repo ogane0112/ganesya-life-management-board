@@ -48,7 +48,7 @@ GitHub APIへの実アクセスなしに、`fetchFn`/`GitHubDataSource` の注�
 | CORS | `ALLOWED_ORIGIN`がレスポンスヘッダに反映される | `index.test.ts` |
 | エラー抽象化 | GitHub APIエラー→502、想定外エラー→500かつ内部情報を含まない | `index.test.ts` |
 
-## 3. `@ganesya/frontend`（76テスト）
+## 3. `@ganesya/frontend`（80テスト）
 
 コンポーネントのアクセシビリティ（`role`/`aria-*`）とインタラクション、外部I/O
 （Web Audio, localStorage, requestAnimationFrame）をモックしたロジック検証の両方を行う。
@@ -66,7 +66,8 @@ GitHub APIへの実アクセスなしに、`fetchFn`/`GitHubDataSource` の注�
 | 画面状態遷移 | loading→ready、loading→error、Worker URL未設定時の設定エラー表示 | `App.test.tsx` |
 | 統合的なレベルアップ表示 | 実際のfetch結果を経由してLevelUpModalが表示される/されない | `App.test.tsx` |
 | 説明ツールチップの開閉経路 | ホバー/クリック固定/フォーカス/Escape/外側クリック、`aria-expanded`の遷移 | `InfoTooltip.test.tsx` |
-| 説明文の生成 | 全6カテゴリで説明が埋まる、engineの重み(60%/40%等)が文面に反映される、`details`欠損時の0フォールバック | `statExplanations.test.ts` |
+| 説明文の生成 | 全6カテゴリでサマリー・説明が埋まる、engineの重み(60%/40%等)が文面に反映される、`details`欠損時の0フォールバック | `statExplanations.test.ts` |
+| ラベルの分かりやすさ | 全ステータスが日本語名で表示される、一行ヒントの表示/未指定時の非表示、ポップオーバー先頭のサマリー | `ParameterBar.test.tsx`, `StatusPanel.test.tsx` |
 | ステータス説明の統合 | 全ステータス＋LVに情報トリガーがある、クリックでデータ元と内訳が出る | `StatusPanel.test.tsx` |
 | Storybookビルド | 全コンポーネントの `.stories.tsx` が `build-storybook` を通過する | CI |
 

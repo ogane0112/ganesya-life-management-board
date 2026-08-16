@@ -26,7 +26,7 @@ describe("StatusPanel", () => {
 
   it("renders a progressbar for every stat category", () => {
     render(<StatusPanel status={STATUS} />);
-    for (const label of ["HP", "INT", "財力", "装備", "判断力", "絆"]) {
+    for (const label of ["継続力", "資格力", "財力", "生活基盤", "判断力", "絆"]) {
       expect(screen.getByRole("progressbar", { name: label })).toBeInTheDocument();
     }
   });
@@ -43,7 +43,7 @@ describe("StatusPanel", () => {
 
   it("offers an info trigger for every stat and for LV", () => {
     render(<StatusPanel status={STATUS} />);
-    for (const label of ["HP", "INT", "財力", "装備", "判断力", "絆", "LV"]) {
+    for (const label of ["継続力", "資格力", "財力", "生活基盤", "判断力", "絆", "LV"]) {
       expect(
         screen.getByRole("button", { name: `${label} の説明` }),
       ).toBeInTheDocument();
@@ -59,13 +59,27 @@ describe("StatusPanel", () => {
     expect(tooltip).toHaveTextContent("意思決定ログ");
   });
 
+  it("names what each stat measures without needing the popover", () => {
+    render(<StatusPanel status={STATUS} />);
+    expect(screen.getByText("日々の記録の続きぐあい")).toBeInTheDocument();
+    expect(screen.getByText("AIとの対話ログの数")).toBeInTheDocument();
+  });
+
+  it("leads the popover with a plain-language summary", () => {
+    render(<StatusPanel status={STATUS} />);
+    fireEvent.click(screen.getByRole("button", { name: "生活基盤 の説明" }));
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      /家電・住まいなど生活の基盤/,
+    );
+  });
+
   it("shows the live breakdown from the status details", () => {
     const status: CharacterStatus = {
       ...STATUS,
       hp: { score: 18, max: 100, details: { streakDays: 0, recentCount: 12 } },
     };
     render(<StatusPanel status={status} />);
-    fireEvent.click(screen.getByRole("button", { name: "HP の説明" }));
+    fireEvent.click(screen.getByRole("button", { name: "継続力 の説明" }));
 
     expect(screen.getByRole("tooltip")).toHaveTextContent("12 件");
   });
