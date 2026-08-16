@@ -8,9 +8,10 @@
 | `PixelWindow` | ドラクエ風の枠線テキストウィンドウ。他の全パネルの土台 | `title?`, `children` | `PixelWindow.test.tsx` |
 | `ParameterBar` | HP/MPゲージ風バー。値変化時にパラパラカウントアップ | `label`, `value`, `max`, `colorVar?` | `ParameterBar.test.tsx` |
 | `StatusPanel` | LV＋全ステータスバーをまとめたキャラクターカード | `status: CharacterStatus`, `characterName?` | `StatusPanel.test.tsx` |
-| `PixelAvatar` | レベル帯（novice/adept/veteran/legend）で見た目が変わるアバター | `level` | `PixelAvatar.test.tsx` |
+| `PixelAvatar` | レベル帯（novice/adept/veteran/legend）で色が変わる16x16ドット絵の猫アバター | `level` | `PixelAvatar.test.tsx` |
 | `LevelUpModal` | 「レベルが あがった！」演出モーダル（フラッシュ＋ビープ音＋カウントアップ） | `previousLevel`, `newLevel`, `onClose`, `playSound?`, `playBeep?` | `LevelUpModal.test.tsx` |
-| `CategoryIcon` | 各カテゴリ（HP/INT/財力/装備/判断力/絆）のドット風アイコン | `category` | `CategoryIcon.test.tsx` |
+| `CategoryIcon` | 各カテゴリ（HP/INT/財力/装備/判断力/絆）の8x8ドット絵アイコン | `category` | `CategoryIcon.test.tsx` |
+| `SpaceBackground` | 星空・流れ星・地球が動く装飾的な背景（`aria-hidden`） | — | Playwrightでの実描画確認（[decisions/0009](../decisions/0009-pixel-cat-avatar-and-space-background.md)） |
 | `PixelFont`（トークン） | `--pixel-font` CSS変数。"Press Start 2P" + 和文フォールバック | — | `global.css` |
 | `RetroPalette`（トークン） | NES風の限定色パレット。`RetroPalette` オブジェクト＋`--rp-*` CSS変数 | — | `tokens/palette.ts` |
 
@@ -30,6 +31,7 @@ flowchart TD
     CategoryIcon --> StatusPanel
     StatusPanel --> App
     LevelUpModal --> App
+    SpaceBackground --> App
 ```
 
 ## 演出（レベルアップ）の実装
@@ -58,15 +60,12 @@ flowchart TD
 置かない）。理由と代替案の比較は
 [decisions/0004-retro-design-tokens.md](../decisions/0004-retro-design-tokens.md) を参照。
 
-## 既知の制約（プレースホルダー実装）
+## ドット絵アセットについて
 
-`PixelAvatar` は、実際のドット絵スプライトシートの代わりにCSS単色ブロックで
-代替している（本物のピクセルアートアセットは今回未作成）。差し替え可能な設計に
-してあるので、アセットが用意でき次第 `PixelAvatar.module.css` の背景色指定を
-画像/SVGスプライトに置き換えるだけで移行できる。判断根拠は
-[decisions/0005-placeholder-pixel-art.md](../decisions/0005-placeholder-pixel-art.md)。
-
-`CategoryIcon` は当初Unicodeグリフで代替していたが、フォントによってはグリフが
-表示されない実機不具合が見つかったため、8x8のインラインSVGドット絵
-（`pixelGrids.ts`）に置き換え済み（[decisions/0008](../decisions/0008-svg-pixel-icons-and-layout-polish.md)）。
-フォント非依存で確実に描画される、抽象度の高いシルエットアイコン。
+`PixelAvatar`（猫、`catGrid.ts`）と `CategoryIcon`（各カテゴリのアイコン、
+`pixelGrids.ts`）はいずれも、フォントや画像アセットに依存しないインラインSVGの
+0/1グリッドとして実装している。デザインはローカルの静的HTML＋Playwright
+スクリーンショットで見た目を確認しながら反復した（[decisions/0008](../decisions/0008-svg-pixel-icons-and-layout-polish.md)、
+[decisions/0009](../decisions/0009-pixel-cat-avatar-and-space-background.md)）。
+本格的なスプライトシート（アニメーションするドット絵など）ではない抽象度の高い
+シルエットだが、環境によらず同じ見た目で確実に描画される。

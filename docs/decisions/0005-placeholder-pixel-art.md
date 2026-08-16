@@ -1,6 +1,6 @@
 # 0005. PixelAvatar / CategoryIconのプレースホルダー実装
 
-- ステータス: 一部更新（`CategoryIcon`は[decisions/0008](./0008-svg-pixel-icons-and-layout-polish.md)でSVGドット絵に置き換え済み。`PixelAvatar`は本ドキュメントのまま暫定）
+- ステータス: 解消済み（`CategoryIcon`は[decisions/0008](./0008-svg-pixel-icons-and-layout-polish.md)、`PixelAvatar`は[decisions/0009](./0009-pixel-cat-avatar-and-space-background.md)でそれぞれSVGドット絵に置き換え済み）
 - 日付: 2026-08-15
 
 ## コンテキスト
@@ -14,6 +14,9 @@
 - `PixelAvatar` はレベル帯（1-9: novice / 10-29: adept / 30-59: veteran / 60-99: legend）
   ごとに単色の正方形ブロック＋枠線で見た目を変える暫定実装とした
   （`getAvatarTier()` で判定ロジックのみ先に確定）。
+  **→ 2026-08-16追記**: [decisions/0009](./0009-pixel-cat-avatar-and-space-background.md)
+  で16x16のインラインSVGドット絵猫に置き換え済み。`getAvatarTier()`の判定ロジック・
+  閾値は変更なしで、見た目のみ差し替えた。
 - `CategoryIcon` は各カテゴリごとに1文字のグリフ（♥/☆/$/⛨/⚖/♪）と専用カラーを
   割り当てる暫定実装とした。
   **→ 2026-08-16追記**: フォントによってグリフが表示されない問題が実機で発覚したため、

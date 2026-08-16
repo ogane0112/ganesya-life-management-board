@@ -4,6 +4,7 @@ import { ApiError, fetchStatus } from "./api/client.js";
 import styles from "./App.module.css";
 import { LevelUpModal } from "./components/LevelUpModal/LevelUpModal.js";
 import { PixelWindow } from "./components/PixelWindow/PixelWindow.js";
+import { SpaceBackground } from "./components/SpaceBackground/SpaceBackground.js";
 import { StatusPanel } from "./components/StatusPanel/StatusPanel.js";
 import { useLevelUpDetection } from "./hooks/useLevelUpDetection.js";
 
@@ -55,6 +56,7 @@ export function App({ workerUrl = ENV_WORKER_URL }: AppProps = {}) {
 
   return (
     <main className={styles.page}>
+      <SpaceBackground />
       <h1 className={styles.title}>life-management RPG</h1>
       <div className={styles.content}>
         {state.kind === "loading" && <PixelWindow>よみこみちゅう...</PixelWindow>}

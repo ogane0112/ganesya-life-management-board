@@ -23,18 +23,6 @@ body {
   margin: 0;
   min-height: 100vh;
   background-color: var(--rp-background);
-  /* Subtle repeating starfield so wide viewports don't read as an empty
-   * void around the centered status card — a common NES/DQ title-screen
-   * motif, done entirely with gradients (no image assets). */
-  background-image:
-    radial-gradient(1.5px 1.5px at 20px 30px, rgba(244, 244, 244, 0.45), transparent),
-    radial-gradient(1.5px 1.5px at 90px 80px, rgba(244, 244, 244, 0.3), transparent),
-    radial-gradient(1px 1px at 150px 20px, rgba(244, 244, 244, 0.35), transparent),
-    radial-gradient(1px 1px at 200px 120px, rgba(244, 244, 244, 0.3), transparent),
-    radial-gradient(1.5px 1.5px at 60px 150px, rgba(244, 244, 244, 0.25), transparent),
-    radial-gradient(1px 1px at 170px 170px, rgba(244, 244, 244, 0.3), transparent);
-  background-repeat: repeat;
-  background-size: 220px 220px;
   color: var(--rp-text);
   font-family: var(--pixel-font);
   image-rendering: pixelated;
