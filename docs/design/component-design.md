@@ -12,6 +12,7 @@
 | `LevelUpModal` | 「レベルが あがった！」演出モーダル（フラッシュ＋ビープ音＋カウントアップ） | `previousLevel`, `newLevel`, `onClose`, `playSound?`, `playBeep?` | `LevelUpModal.test.tsx` |
 | `CategoryIcon` | 各カテゴリ（HP/INT/財力/装備/判断力/絆）の8x8ドット絵アイコン | `category` | `CategoryIcon.test.tsx` |
 | `SpaceBackground` | 星空・流れ星・地球が動く装飾的な背景（`aria-hidden`） | — | Playwrightでの実描画確認（[decisions/0009](../decisions/0009-pixel-cat-avatar-and-space-background.md)） |
+| `InfoTooltip` | ホバー/クリック/フォーカスで開く説明ポップオーバー | `label`, `children` | `InfoTooltip.test.tsx` |
 | `PixelFont`（トークン） | `--pixel-font` CSS変数。"Press Start 2P" + 和文フォールバック | — | `global.css` |
 | `RetroPalette`（トークン） | NES風の限定色パレット。`RetroPalette` オブジェクト＋`--rp-*` CSS変数 | — | `tokens/palette.ts` |
 
@@ -29,10 +30,19 @@ flowchart TD
     ParameterBar --> StatusPanel
     PixelAvatar --> StatusPanel
     CategoryIcon --> StatusPanel
+    InfoTooltip --> StatusPanel
     StatusPanel --> App
     LevelUpModal --> App
     SpaceBackground --> App
 ```
+
+## ステータス説明ツールチップ
+
+各ステータス行とLVには情報アイコンが付いており、ホバー/クリック/キーボード
+フォーカスのいずれでも「データ元」「算出方法」「いまの内訳」を表示する。
+説明文は`stats-engine`の`STATUS_WEIGHTS`から重み・半減点を読み取って
+生成しているため、計算式をチューニングしても説明が古いまま残ることがない。
+設計判断の詳細は [decisions/0010](../decisions/0010-stat-explanation-tooltips.md)。
 
 ## 演出（レベルアップ）の実装
 

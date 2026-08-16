@@ -9,10 +9,16 @@
   font-size: clamp(0.7rem, 1.2vw, 1.05rem);
 }
 
+.levelRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 6px;
+}
+
 .level {
   font-size: clamp(0.9rem, 1.6vw, 1.5rem);
   color: var(--rp-gold);
-  margin-top: 6px;
 }
 
 .statRow {

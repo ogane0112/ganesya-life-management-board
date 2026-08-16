@@ -48,7 +48,7 @@ GitHub APIへの実アクセスなしに、`fetchFn`/`GitHubDataSource` の注�
 | CORS | `ALLOWED_ORIGIN`がレスポンスヘッダに反映される | `index.test.ts` |
 | エラー抽象化 | GitHub APIエラー→502、想定外エラー→500かつ内部情報を含まない | `index.test.ts` |
 
-## 3. `@ganesya/frontend`（52テスト）
+## 3. `@ganesya/frontend`（76テスト）
 
 コンポーネントのアクセシビリティ（`role`/`aria-*`）とインタラクション、外部I/O
 （Web Audio, localStorage, requestAnimationFrame）をモックしたロジック検証の両方を行う。
@@ -65,6 +65,9 @@ GitHub APIへの実アクセスなしに、`fetchFn`/`GitHubDataSource` の注�
 | API通信 | 成功時のJSONパース、非2xxで`ApiError`、ステータスコードの伝播 | `client.test.ts` |
 | 画面状態遷移 | loading→ready、loading→error、Worker URL未設定時の設定エラー表示 | `App.test.tsx` |
 | 統合的なレベルアップ表示 | 実際のfetch結果を経由してLevelUpModalが表示される/されない | `App.test.tsx` |
+| 説明ツールチップの開閉経路 | ホバー/クリック固定/フォーカス/Escape/外側クリック、`aria-expanded`の遷移 | `InfoTooltip.test.tsx` |
+| 説明文の生成 | 全6カテゴリで説明が埋まる、engineの重み(60%/40%等)が文面に反映される、`details`欠損時の0フォールバック | `statExplanations.test.ts` |
+| ステータス説明の統合 | 全ステータス＋LVに情報トリガーがある、クリックでデータ元と内訳が出る | `StatusPanel.test.tsx` |
 | Storybookビルド | 全コンポーネントの `.stories.tsx` が `build-storybook` を通過する | CI |
 
 ## 未実施・要手動確認（実インフラ依存のため）
@@ -73,14 +76,14 @@ GitHub APIへの実アクセスなしに、`fetchFn`/`GitHubDataSource` の注�
 デプロイ・Secret設定・実際のHTTP疎通確認はユーザー側での手動実施となる
 （[deployment.md](../deployment.md) の手順・チェックリスト参照）。
 
-1. **【要対応】実Workerでの全カテゴリ0点**: 実デプロイしたWorkerで確認したところ、
-   件数のみで決まるはずの装備・判断力・絆まで含め全ステータスが0だった。
-   2026-08-16に `life-management` の実データ形式を確認しパーサーは修正済み
-   （[decisions/0007](../decisions/0007-real-data-format-corrections.md)）だが、
-   件数ベースの項目まで0だったことはパーサーの問題だけでは説明できず、
-   GitHub PATの権限不足など、Worker→GitHub API疎通自体の失敗が疑われる。
-   パーサー修正版の再デプロイ後、直っていなければPATの権限
-   （対象リポジトリへの `Contents: Read` が付与されているか）を要確認。
+1. ~~**実Workerでの全カテゴリ0点**~~ → **解決済み（2026-08-16）**。
+   [decisions/0007](../decisions/0007-real-data-format-corrections.md) の
+   パーサー修正を反映したWorkerを再デプロイした結果、実画面で
+   HP 18 / INT 69 / 財力 58 / 装備 20 / 判断力 47 / 絆 38 が表示され、
+   ローカルの実データ検証値と完全に一致した。GitHub API疎通・PAT権限・
+   パース処理すべて正常に動作している。
+   なお LV が 1 のままなのは `profile/career.md` の入社日欄が未記入のためで、
+   仕様どおりの挙動（実データ入力待ち）。
 2. **実データでの計算式の妥当性**: ファイル形式は実データで確認・修正済みだが、
    重み・半減点が実際の記録量に対して体感的に「ちょうどいい成長速度」かは
    実運用しながら要調整（[design/status-calculation.md](../design/status-calculation.md)

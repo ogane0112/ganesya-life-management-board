@@ -1,0 +1,52 @@
+.root {
+  display: block;
+}
+
+.title {
+  display: block;
+  color: var(--rp-gold);
+  margin-bottom: 8px;
+}
+
+.sectionLabel {
+  display: block;
+  margin-top: 10px;
+  margin-bottom: 3px;
+  color: var(--rp-text-muted);
+  font-size: 0.85em;
+}
+
+.source {
+  display: block;
+  color: var(--rp-mp);
+  font-family: var(--pixel-font);
+  word-break: break-all;
+}
+
+.list {
+  margin: 0;
+  padding-left: 1.2em;
+}
+
+.list li {
+  margin-bottom: 4px;
+}
+
+.breakdown {
+  margin: 0;
+}
+
+.breakdownRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.breakdownRow dt {
+  color: var(--rp-text-muted);
+}
+
+.breakdownRow dd {
+  margin: 0;
+  color: var(--rp-green);
+}
