@@ -2,13 +2,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 64px;
-  height: 64px;
+  width: clamp(64px, 8vw, 112px);
+  height: clamp(64px, 8vw, 112px);
   border: 4px solid var(--rp-border);
   background: var(--rp-window-background);
   image-rendering: pixelated;
+  flex-shrink: 0;
 }
 
 .avatar svg {
+  width: 100%;
+  height: 100%;
   image-rendering: pixelated;
 }

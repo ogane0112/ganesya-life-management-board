@@ -1,9 +1,9 @@
 .row {
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.7rem;
-  margin: 6px 0;
+  gap: clamp(8px, 1vw, 16px);
+  font-size: clamp(0.7rem, 1.1vw, 1rem);
+  margin: clamp(6px, 1vh, 12px) 0;
 }
 
 .label {
@@ -13,7 +13,7 @@
 
 .track {
   flex: 1;
-  height: 12px;
+  height: clamp(12px, 1.6vw, 20px);
   background: #000;
   border: 2px solid var(--rp-border);
   padding: 1px;
@@ -25,6 +25,6 @@
 }
 
 .value {
-  min-width: 5em;
+  min-width: 6em;
   text-align: right;
 }

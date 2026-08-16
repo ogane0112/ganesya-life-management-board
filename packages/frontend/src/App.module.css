@@ -6,19 +6,23 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 20px;
+  gap: clamp(16px, 3vh, 32px);
   padding: 32px 16px;
 }
 
 .title {
-  font-size: 0.85rem;
+  font-size: clamp(0.85rem, 2.2vw, 1.6rem);
   color: var(--rp-gold);
-  text-shadow: 2px 2px 0 var(--rp-hp-dark);
+  text-shadow: 3px 3px 0 var(--rp-hp-dark);
   text-align: center;
   letter-spacing: 0.05em;
+  margin: 0;
 }
 
+/* Scales with the viewport instead of sitting at a fixed 480px, so the
+ * card reads at a comfortable "zoomed in" size on desktop while still
+ * fitting narrow screens. */
 .content {
   width: 100%;
-  max-width: 480px;
+  max-width: clamp(420px, 62vw, 860px);
 }

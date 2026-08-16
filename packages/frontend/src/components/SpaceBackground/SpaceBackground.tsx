@@ -9,12 +9,19 @@ import styles from "./SpaceBackground.module.css";
 /** Builds a CSS box-shadow list standing in for a starfield: one 1x1
  * element with many box-shadows paints hundreds of "stars" in a single
  * layer, which is far cheaper than one DOM node per star. */
-function randomStarShadows(count: number, spreadX: number, spreadY: number): string {
+function randomStarShadows(
+  count: number,
+  spreadX: number,
+  spreadY: number,
+  glowPx: number,
+): string {
   const shadows: string[] = [];
   for (let i = 0; i < count; i++) {
     const x = Math.round(Math.random() * spreadX);
     const y = Math.round(Math.random() * spreadY);
-    shadows.push(`${x}px ${y}px #f4f4f4`);
+    // The blur radius is what makes each star read as glowing rather than
+    // as a flat dot.
+    shadows.push(`${x}px ${y}px ${glowPx}px #f4f4f4`);
   }
   return shadows.join(",");
 }
@@ -96,9 +103,9 @@ function Planet({ className, oceanColor, landColor, spinDurationSec }: PlanetPro
  * is respected in the stylesheet.
  */
 export function SpaceBackground() {
-  const starsSmall = useMemo(() => randomStarShadows(120, 2400, 1600), []);
-  const starsMedium = useMemo(() => randomStarShadows(60, 2400, 1600), []);
-  const starsLarge = useMemo(() => randomStarShadows(28, 2400, 1600), []);
+  const starsSmall = useMemo(() => randomStarShadows(130, 2400, 1600, 1), []);
+  const starsMedium = useMemo(() => randomStarShadows(65, 2400, 1600, 3), []);
+  const starsLarge = useMemo(() => randomStarShadows(30, 2400, 1600, 6), []);
 
   return (
     <div className={styles.space} aria-hidden="true">
@@ -118,21 +125,26 @@ export function SpaceBackground() {
       <div className={styles.starsMedium} style={{ boxShadow: starsMedium }} />
       <div className={styles.starsLarge} style={{ boxShadow: starsLarge }} />
 
+      {/* Five staggered streaks with overlapping visible phases, so at any
+       * given moment at least one is mid-flight rather than the screen
+       * sitting empty between passes. */}
       <div className={`${styles.shootingStar} ${styles.shootingStar1}`} />
       <div className={`${styles.shootingStar} ${styles.shootingStar2}`} />
       <div className={`${styles.shootingStar} ${styles.shootingStar3}`} />
+      <div className={`${styles.shootingStar} ${styles.shootingStar4}`} />
+      <div className={`${styles.shootingStar} ${styles.shootingStar5}`} />
 
       <Planet
         className={styles.earth}
         oceanColor="#3fa7d6"
         landColor="#5ec96b"
-        spinDurationSec={48}
+        spinDurationSec={26}
       />
       <Planet
         className={styles.moon}
         oceanColor="#6a6a8a"
         landColor="#9a9ab0"
-        spinDurationSec={72}
+        spinDurationSec={34}
       />
 
       <div className={styles.vignette} />

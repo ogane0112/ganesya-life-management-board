@@ -1,24 +1,24 @@
 .header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: clamp(12px, 1.6vw, 24px);
+  margin-bottom: clamp(16px, 2.5vh, 28px);
 }
 
 .name {
-  font-size: 0.7rem;
+  font-size: clamp(0.7rem, 1.2vw, 1.05rem);
 }
 
 .level {
-  font-size: 0.9rem;
+  font-size: clamp(0.9rem, 1.6vw, 1.5rem);
   color: var(--rp-gold);
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .statRow {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: clamp(6px, 0.9vw, 14px);
 }
 
 .barWrap {

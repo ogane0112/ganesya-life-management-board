@@ -52,8 +52,6 @@ export function PixelAvatar({ level }: PixelAvatarProps) {
     >
       <svg
         viewBox={`0 0 ${size} ${size}`}
-        width="64"
-        height="64"
         shapeRendering="crispEdges"
         aria-hidden="true"
         focusable="false"

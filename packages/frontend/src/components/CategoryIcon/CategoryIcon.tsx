@@ -46,8 +46,6 @@ export function CategoryIcon({ category }: CategoryIconProps) {
     <span className={styles.icon} role="img" aria-label={meta.label}>
       <svg
         viewBox={`0 0 ${size} ${size}`}
-        width="16"
-        height="16"
         shapeRendering="crispEdges"
         aria-hidden="true"
         focusable="false"

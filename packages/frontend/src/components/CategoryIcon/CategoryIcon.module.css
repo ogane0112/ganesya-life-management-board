@@ -2,10 +2,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 1.5em;
+  width: clamp(20px, 2vw, 32px);
   image-rendering: pixelated;
+  flex-shrink: 0;
 }
 
 .icon svg {
+  width: 100%;
+  height: auto;
   image-rendering: pixelated;
 }
