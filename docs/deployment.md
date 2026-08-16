@@ -29,15 +29,34 @@ curl -i https://<worker-subdomain>.workers.dev/api/status
 
 `GITHUB_TOKEN` 未設定なら500、正しく疎通していれば `CharacterStatus` のJSONが200で返る。
 
-## 2. フロントエンドのビルド・GitHub Pagesデプロイ
+## 2. フロントエンドのビルド・GitHub Pagesデプロイ（自動）
+
+手動でビルドコマンドを叩く必要はない。`.github/workflows/deploy-pages.yml` が
+**`main` ブランチにpushするたびに自動でビルド＆GitHub Pagesへ公開**する
+（GitHub公式の `actions/deploy-pages` を使用）。
+
+やることは最初の1回だけの設定のみ：
+
+1. **Pagesの配信元をActionsにする**（リポジトリで1回だけ）
+   GitHubの当該リポジトリ → `Settings` → `Pages` → `Build and deployment` →
+   `Source` を `GitHub Actions` に変更する（`gh-pages` ブランチ等は不要）。
+2. **Worker URLを登録する**（Workerをデプロイした後）
+   `Settings` → `Secrets and variables` → `Actions` → `Variables` タブ →
+   `New repository variable` で以下を追加：
+   - Name: `VITE_WORKER_URL`
+   - Value: `https://<worker-subdomain>.workers.dev/api/status`
+     （手順1でデプロイしたWorkerのURL）
+
+この2つを設定した状態で `main` にpush（またはActionsタブから
+`Deploy frontend to GitHub Pages` を手動実行）すると、以後は自動でビルド・公開される。
+手元でビルド結果だけ確認したい場合は次のコマンドでも可能：
 
 ```bash
 cd packages/frontend
 VITE_WORKER_URL="https://<worker-subdomain>.workers.dev/api/status" npm run build
 ```
 
-`dist/` を GitHub Pages（`gh-pages` ブランチ、または Pages の GitHub Actions連携）に
-配信する。`vite.config.ts` の `base` はリポジトリ名に応じたプロジェクトサイトのパス
+`vite.config.ts` の `base` はリポジトリ名に応じたプロジェクトサイトのパス
 （デフォルト `/ganesya-life-management-board/`）になっているため、別リポジトリ名で
 配信する場合は `VITE_BASE_PATH` 環境変数で上書きする。
 
@@ -65,3 +84,5 @@ VITE_WORKER_URL="https://<worker-subdomain>.workers.dev/api/status" npm run buil
       が実機で正しく動く
 - [ ] 実データでのスコアの伸び方を確認し、`STATUS_WEIGHTS`（`stats-engine/src/calculate.ts`）
       の重み・半減点を必要に応じて調整
+- [ ] `Settings > Pages > Source` が `GitHub Actions` になっている、
+      かつ `VITE_WORKER_URL` リポジトリ変数が設定されている（自動デプロイの前提）
