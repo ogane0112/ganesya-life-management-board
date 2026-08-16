@@ -8,7 +8,29 @@
    * puts it in the stacking context's background layer instead. */
   z-index: -1;
   pointer-events: none;
-  background: radial-gradient(ellipse at 50% 0%, #1a1a3a 0%, var(--rp-background) 60%);
+  background: var(--rp-background);
+}
+
+/* Two wide, low-saturation clouds set on opposite diagonals. They give the
+ * flat black some depth and, being the lowest-contrast layer, never
+ * compete with the foreground card. */
+.nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 45% at 22% 18%, rgba(63, 167, 214, 0.13), transparent 70%),
+    radial-gradient(ellipse 50% 40% at 82% 72%, rgba(160, 108, 213, 0.13), transparent 70%),
+    radial-gradient(ellipse 70% 50% at 50% 50%, rgba(26, 26, 58, 0.85), transparent 75%);
+  animation: nebula-drift 24s ease-in-out infinite alternate;
+}
+
+@keyframes nebula-drift {
+  from {
+    transform: translate3d(-1.5%, -1%, 0) scale(1.04);
+  }
+  to {
+    transform: translate3d(1.5%, 1%, 0) scale(1.08);
+  }
 }
 
 .starsSmall,
@@ -22,17 +44,22 @@
   border-radius: 50%;
 }
 
+/* Three layers at different sizes/opacities read as three distances. */
 .starsSmall {
-  opacity: 0.5;
+  opacity: 0.45;
   animation: twinkle 3.5s ease-in-out infinite;
 }
 
 .starsMedium {
-  opacity: 0.7;
+  width: 2px;
+  height: 2px;
+  opacity: 0.65;
   animation: twinkle 4.5s ease-in-out infinite 1.2s;
 }
 
 .starsLarge {
+  width: 2px;
+  height: 2px;
   opacity: 0.85;
   animation: twinkle 5.5s ease-in-out infinite 2.4s;
 }
@@ -40,20 +67,25 @@
 @keyframes twinkle {
   0%,
   100% {
-    opacity: 0.3;
+    opacity: 0.25;
   }
   50% {
     opacity: 1;
   }
 }
 
+/* --- Shooting stars ---------------------------------------------------
+ * Each starts just outside the top-right and crosses well past the
+ * bottom-left edge, so the streak is actually on screen for its whole
+ * visible phase (the previous version travelled too short a distance and
+ * faded before entering view). */
 .shootingStar {
   position: absolute;
-  width: 3px;
-  height: 3px;
+  width: 4px;
+  height: 4px;
   background: #f4f4f4;
   border-radius: 50%;
-  box-shadow: 0 0 6px 1px rgba(244, 244, 244, 0.8);
+  box-shadow: 0 0 8px 2px rgba(244, 244, 244, 0.85);
   opacity: 0;
 }
 
@@ -61,67 +93,127 @@
   content: "";
   position: absolute;
   top: 50%;
-  left: 100%;
-  width: 90px;
-  height: 1px;
-  background: linear-gradient(to left, rgba(244, 244, 244, 0.9), transparent);
+  left: 4px;
+  width: 140px;
+  height: 2px;
+  background: linear-gradient(to right, rgba(244, 244, 244, 0.9), transparent);
   transform: translateY(-50%);
 }
 
 .shootingStar1 {
-  top: 12%;
-  left: 78%;
-  animation: shoot 9s linear infinite 1s;
+  top: -5%;
+  left: 95%;
+  animation: shoot 7s linear infinite 1.5s;
 }
 
 .shootingStar2 {
-  top: 55%;
-  left: 60%;
-  animation: shoot 11s linear infinite 4.5s;
+  top: 6%;
+  left: 72%;
+  animation: shoot 9s linear infinite 4s;
 }
 
 .shootingStar3 {
-  top: 30%;
-  left: 92%;
-  animation: shoot 8s linear infinite 7s;
+  top: -8%;
+  left: 46%;
+  animation: shoot 11s linear infinite 7.5s;
 }
 
+/* Travel spans most of the viewport so the streak crosses the open field
+ * rather than clipping a corner, and stays lit for the whole crossing.
+ * The -23deg rotation points the tail back along the flight path
+ * (opposite the -90vw/62vh motion vector). */
 @keyframes shoot {
   0% {
-    transform: translate(0, 0) rotate(-145deg);
+    transform: translate3d(0, 0, 0) rotate(-23deg);
     opacity: 0;
   }
-  2% {
+  3% {
     opacity: 1;
   }
-  14% {
-    transform: translate(-320px, 220px) rotate(-145deg);
+  22% {
+    opacity: 1;
+  }
+  26% {
+    transform: translate3d(-90vw, 62vh, 0) rotate(-23deg);
     opacity: 0;
   }
   100% {
-    transform: translate(-320px, 220px) rotate(-145deg);
+    transform: translate3d(-90vw, 62vh, 0) rotate(-23deg);
     opacity: 0;
   }
 }
 
-.earth {
+/* --- Planets ----------------------------------------------------------
+ * Placed on opposite ends of a diagonal so their visual weights balance
+ * across the composition instead of loading one corner. Sizes are set in
+ * vmin so they scale with the viewport rather than looking tiny on a
+ * large desktop screen. */
+.earth,
+.moon {
   position: absolute;
-  top: 8%;
-  right: 6%;
-  opacity: 0.9;
-  filter: drop-shadow(0 0 16px rgba(63, 167, 214, 0.45));
-  animation: earth-glow 6s ease-in-out infinite;
   image-rendering: pixelated;
 }
 
-@keyframes earth-glow {
+.earth {
+  top: 7vh;
+  right: 8vw;
+  width: clamp(140px, 22vmin, 280px);
+  height: clamp(140px, 22vmin, 280px);
+  filter: drop-shadow(0 0 24px rgba(63, 167, 214, 0.45));
+  animation: float-slow 14s ease-in-out infinite;
+}
+
+.moon {
+  bottom: 9vh;
+  left: 7vw;
+  width: clamp(64px, 10vmin, 130px);
+  height: clamp(64px, 10vmin, 130px);
+  opacity: 0.75;
+  filter: drop-shadow(0 0 14px rgba(154, 154, 176, 0.35));
+  animation: float-slow 18s ease-in-out infinite reverse;
+}
+
+/* Gentle vertical drift keeps the scene alive without pulling focus. */
+@keyframes float-slow {
   0%,
   100% {
-    filter: drop-shadow(0 0 12px rgba(63, 167, 214, 0.35));
+    transform: translateY(0);
   }
   50% {
-    filter: drop-shadow(0 0 20px rgba(63, 167, 214, 0.6));
+    transform: translateY(-14px);
   }
+}
+
+/* Continent band scroll — translating by exactly the tile width loops
+ * seamlessly, which reads as the globe rotating. Duration is set
+ * per-planet from the component. */
+.spinBand {
+  animation: spin-band linear infinite;
+}
+
+@keyframes spin-band {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-24px);
+  }
+}
+
+.planetShade {
+  pointer-events: none;
+}
+
+/* Darkened edges push contrast toward the centre, where the status card
+ * lives — the background stays background. */
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 75% 65% at 50% 50%,
+    transparent 40%,
+    rgba(15, 15, 27, 0.55) 100%
+  );
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -129,14 +221,28 @@
   .starsMedium,
   .starsLarge,
   .shootingStar,
-  .earth {
+  .earth,
+  .moon,
+  .spinBand,
+  .nebula {
     animation: none !important;
   }
 }
 
+/* On phones the card fills most of the screen, so pull the planets toward
+ * the corners and shrink them to stay out of the content's way. */
 @media (max-width: 640px) {
   .earth {
-    width: 72px;
-    height: 72px;
+    top: 2vh;
+    right: 2vw;
+    width: 96px;
+    height: 96px;
+  }
+
+  .moon {
+    bottom: 3vh;
+    left: 4vw;
+    width: 52px;
+    height: 52px;
   }
 }
