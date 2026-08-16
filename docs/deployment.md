@@ -41,11 +41,15 @@ curl -i https://<worker-subdomain>.workers.dev/api/status
    GitHubの当該リポジトリ → `Settings` → `Pages` → `Build and deployment` →
    `Source` を `GitHub Actions` に変更する（`gh-pages` ブランチ等は不要）。
 2. **Worker URLを登録する**（Workerをデプロイした後）
-   `Settings` → `Secrets and variables` → `Actions` → `Variables` タブ →
-   `New repository variable` で以下を追加：
+   `Settings` → `Secrets and variables` → `Actions` を開き、`Variables` タブ・
+   `Secrets` タブのどちらでも構わないので以下を追加：
    - Name: `VITE_WORKER_URL`
    - Value: `https://<worker-subdomain>.workers.dev/api/status`
      （手順1でデプロイしたWorkerのURL）
+
+   ワークフロー側は `${{ vars.VITE_WORKER_URL || secrets.VITE_WORKER_URL }}` と
+   両対応にしてあるので、どちらのタブに登録しても反映される
+   （機密情報ではないのでVariables推奨だが、Secretsでも動作する）。
 
 この2つを設定した状態で `main` にpush（またはActionsタブから
 `Deploy frontend to GitHub Pages` を手動実行）すると、以後は自動でビルド・公開される。

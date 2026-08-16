@@ -36,11 +36,13 @@ jobs:
       - name: Build frontend
         run: npm run build --workspace=@ganesya/frontend
         env:
-          # Set this once the Worker is deployed:
-          # Settings > Secrets and variables > Actions > Variables > New repository variable
+          # Set this once the Worker is deployed, via either tab under
+          # Settings > Secrets and variables > Actions:
+          #   Variables > New repository variable, or
+          #   Secrets > New repository secret
           #   Name: VITE_WORKER_URL
           #   Value: https://<worker-subdomain>.workers.dev/api/status
-          VITE_WORKER_URL: ${{ vars.VITE_WORKER_URL }}
+          VITE_WORKER_URL: ${{ vars.VITE_WORKER_URL || secrets.VITE_WORKER_URL }}
 
       - uses: actions/configure-pages@v5
 
